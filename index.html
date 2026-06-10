@@ -2644,7 +2644,7 @@
         // SYSTEM SHORTCUT KEYS LISTENER INTERACTION
         function registerKeyboardShortcuts() {
             window.addEventListener("keydown", (e) => {
-                if(e.key === '/' && document.activeElement !== document.getElementById("global-search")) {
+                if(e.key === 'shift+k' && document.activeElement !== document.getElementById("global-search")) {
                     e.preventDefault();
                     document.getElementById("global-search").focus();
                 }
