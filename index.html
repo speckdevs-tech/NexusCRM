@@ -1,0 +1,2727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusCRM // Premium Outreach Lead Management</title>
+    <!-- Google Fonts & Remix Icons for premium SaaS look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           STYLE SYSTEM CONTEXT ARCHITECTURE
+           Color Palette Base Integration Map:
+           - #161D6F : Deep Space Sapphire (Dominant Brand Anchor / Headers)
+           - #98DED9 : Liquid Mint Turquoise (SaaS Highlights / Accent Interactive UI)
+           - #C7FFD8 : Soft Sage Tint (UI Converted Success)
+           - #F6F6F6 : Off-white Alabaster (Surface Clean Structure Canvas)
+           ========================================================================== */
+
+        :root {
+            --bg-main: #F6F6F6;
+            --bg-surface: #FFFFFF;
+            --bg-surface-glass: rgba(255, 255, 255, 0.85);
+            --border-color: #E2E8F0;
+            --text-primary: #0F172A;
+            --text-muted: #64748B;
+            
+            --brand-primary: #161D6F;
+            --brand-accent: #98DED9;
+            --brand-success-tint: #C7FFD8;
+            
+            --color-high: #EF4444;
+            --color-medium: #F59E0B;
+            --color-low: #3B82F6;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            --shadow-glass: 0 8px 32px 0 rgba(22, 29, 111, 0.05);
+            
+            --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+        }
+
+        /* Dark Mode Variable Adaptations */
+        body.dark-mode {
+            --bg-main: #0B0F2B;
+            --bg-surface: #12183D;
+            --bg-surface-glass: rgba(18, 24, 61, 0.85);
+            --border-color: #222B5C;
+            --text-primary: #F1F5F9;
+            --text-muted: #94A3B8;
+            --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* System Overrides and Resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* App Shell Structure Layout */
+        .app-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--brand-primary);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 100;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #FFFFFF;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-brand-core {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--brand-accent), #FFFFFF);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-primary);
+            font-size: 1.5rem;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-brand h2 span {
+            color: var(--brand-accent);
+        }
+
+        .sidebar-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            background: none;
+            border: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            width: 100%;
+            text-align: left;
+        }
+
+        .menu-item i {
+            font-size: 1.2rem;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: rgba(152, 222, 217, 0.15);
+            color: var(--brand-accent);
+        }
+
+        .dynamic-badge {
+            margin-left: auto;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .alert-badge {
+            background-color: var(--color-high);
+            color: white;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            outline: none;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: #FFFFFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            justify-content: center;
+            font-family: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Workspace Structure */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Upgraded Responsive Top Navbar */
+        .top-navbar {
+            min-height: 75px;
+            background-color: var(--bg-surface-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 2rem;
+            z-index: 90;
+            flex-shrink: 0;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-title-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title-area h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .top-navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-grow: 1;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .global-search-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            min-width: 180px;
+        }
+
+        .global-search-container .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        #global-search {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            outline: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        #global-search:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(22, 29, 111, 0.1);
+        }
+
+        /* Buttons styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            outline: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-surface);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-main);
+        }
+
+        .btn-danger {
+            background-color: var(--color-high);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-square {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        /* Mobile Backdrop drawer mask */
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 95;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .sidebar-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Viewport Content Area */
+        .view-viewport {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out forwards;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--brand-accent);
+        }
+
+        .stat-card-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            line-height: 1.2;
+        }
+
+        body.dark-mode .stat-card-value {
+            color: #FFFFFF;
+        }
+
+        .stat-card-growth {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Split Section */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .content-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Timelines UI */
+        .timeline-container {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 30px;
+            bottom: -20px;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--bg-main);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--brand-primary);
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        body.dark-mode .timeline-badge {
+            color: var(--brand-accent);
+        }
+
+        .timeline-content {
+            flex-grow: 1;
+            padding-top: 0.25rem;
+        }
+
+        .timeline-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.15rem;
+        }
+
+        .timeline-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Follow-ups mini cards */
+        .followup-mini-list {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .mini-followup-card {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-main);
+            border-left: 4px solid var(--color-medium);
+            transition: var(--transition-smooth);
+        }
+
+        .mini-followup-card:hover {
+            transform: translateX(4px);
+        }
+
+        .mini-followup-card.overdue {
+            border-left-color: var(--color-high);
+        }
+
+        .mini-followup-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .mini-followup-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Kanban Pipeline UI */
+        .filter-toolbar {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-control {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control:focus {
+            border-color: var(--brand-primary);
+        }
+
+        .kanban-board {
+            display: flex;
+            gap: 1.25rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            align-items: flex-start;
+            height: calc(100vh - 240px);
+        }
+
+        .kanban-column {
+            flex: 0 0 310px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .kanban-column-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .kanban-column-count {
+            background-color: var(--bg-main);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .kanban-cards-container {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            overflow-y: auto;
+            flex-grow: 1;
+            min-height: 200px;
+            transition: background-color 0.2s ease;
+        }
+
+        .kanban-cards-container.drag-over {
+            background-color: rgba(152, 222, 217, 0.12);
+            outline: 2px dashed var(--brand-accent);
+            outline-offset: -4px;
+        }
+
+        /* Lead Cards */
+        .lead-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            box-shadow: var(--shadow-sm);
+            cursor: grab;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .lead-card:active {
+            cursor: grabbing;
+        }
+
+        .lead-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--brand-accent);
+        }
+
+        .lead-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .lead-card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .priority-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .priority-High { background-color: var(--color-high); }
+        .priority-Medium { background-color: var(--color-medium); }
+        .priority-Low { background-color: var(--color-low); }
+
+        .lead-card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .lead-card-meta div {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .lead-card-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .source-tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            background-color: var(--bg-main);
+            color: var(--text-muted);
+        }
+
+        .lead-card-actions {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .action-icon-btn {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .action-icon-btn:hover {
+            background-color: var(--bg-main);
+            color: var(--brand-primary);
+        }
+
+        body.dark-mode .action-icon-btn:hover {
+            color: var(--brand-accent);
+        }
+
+        /* Table UI */
+        .table-responsive-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .leads-table th {
+            background-color: var(--bg-main);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .leads-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .leads-table tr:hover td {
+            background-color: rgba(152, 222, 217, 0.05);
+        }
+
+        /* Status Pills */
+        .status-pill {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .status-New-Lead { background-color: #E2E8F0; color: #475569; }
+        .status-DM-Sent { background-color: #DBEAFE; color: #1E40AF; }
+        .status-Replied { background-color: #FEF3C7; color: #92400E; }
+        .status-Meeting-Scheduled { background-color: #E0F2FE; color: #0369A1; }
+        .status-Proposal-Sent { background-color: #F3E8FF; color: #6B21A8; }
+        .status-Converted { background-color: var(--brand-success-tint); color: #065F46; }
+        .status-Lost { background-color: #FEE2E2; color: #991B1B; }
+
+        /* Followups Split Management Panel */
+        .followup-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .followup-panel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 200px);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .followup-list-container {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Analytics Graphics Layout */
+        .analytics-dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .graph-card {
+            min-height: 340px;
+        }
+
+        .full-span-graph {
+            grid-column: 1 / -1;
+            min-height: 360px;
+        }
+
+        .canvas-wrapper {
+            padding: 1.5rem;
+            position: relative;
+            width: 100%;
+            height: 250px;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* System Modal Overlays */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 650px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-overlay.open .modal-box {
+            transform: translateY(0);
+        }
+
+        /* Ensure form within modal expands correctly to fill space and allows internal scroll */
+        .modal-box form {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: hidden;
+            max-height: 100%;
+        }
+
+        .premium-wide-modal {
+            max-width: 950px;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-scroll-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .modal-footer {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Custom Grids & Inputs */
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .form-group .form-control { width: 100%; }
+        .textarea-input { resize: vertical; min-height: 80px; }
+
+        .input-addon-wrapper {
+            display: flex;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .input-addon-wrapper .addon-tag {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            padding: 0 0.75rem;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .input-addon-wrapper .form-control {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            flex-grow: 1;
+        }
+
+        /* Detail Modal Side-by-Side Split View */
+        .detailed-view-split {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2rem;
+            height: 100%;
+        }
+
+        .header-profile-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-data-grouping {
+            background-color: var(--bg-main);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .meta-field {
+            font-size: 0.9rem;
+        }
+
+        .quick-action-dashboard {
+            margin-top: 1.5rem;
+        }
+
+        .quick-action-dashboard h4, .notes-ledger-system h4, .detail-panel-right h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .btn-action-tool {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem;
+            font-size: 0.8rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-action-tool:hover {
+            background-color: var(--brand-accent);
+            color: var(--brand-primary);
+            border-color: var(--brand-accent);
+        }
+
+        /* Custom Notes Ledger System */
+        .notes-ledger-system {
+            margin-top: 2rem;
+        }
+
+        .add-note-inline {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-note-inline input {
+            flex-grow: 1;
+        }
+
+        .notes-history-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .system-note-item {
+            background-color: var(--bg-main);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+        }
+
+        .system-note-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 2000;
+        }
+
+        .toast-message {
+            background-color: var(--brand-primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideInToast 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideInToast {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* System Utility Classes */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hidden { display: none !important; }
+
+        .settings-max-card {
+            padding: 2rem;
+        }
+        .settings-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .settings-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .settings-actions-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Priority pill colors for modal */
+        .priority-pill {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            color: white;
+        }
+        .priority-pill.priority-High { background-color: var(--color-high); }
+        .priority-pill.priority-Medium { background-color: var(--color-medium); }
+        .priority-pill.priority-Low { background-color: var(--color-low); }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .dashboard-layout, .detailed-view-split, .analytics-dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                bottom: 0;
+                height: 100vh;
+                box-shadow: var(--shadow-lg);
+            }
+            .sidebar.mobile-open {
+                left: 0;
+            }
+            .sidebar-close-btn {
+                display: block;
+            }
+            .mobile-menu-toggle {
+                display: block !important;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--text-primary);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-navbar {
+                padding: 0.5rem 1rem;
+            }
+            .top-navbar-actions {
+                justify-content: space-between;
+                width: 100%;
+            }
+            .global-search-container {
+                max-width: none;
+                flex-grow: 1;
+            }
+            .btn-responsive-compact span {
+                display: none;
+            }
+            .btn-responsive-compact i {
+                margin: 0;
+                font-size: 1.25rem;
+            }
+            .btn-responsive-compact {
+                padding: 0.6rem;
+                width: 40px;
+                height: 40px;
+            }
+            .view-viewport {
+                padding: 1rem;
+            }
+        }
+
+        .mobile-menu-toggle { display: none; }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Mobile Drawer Overlay Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- App Shell Layout -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-core">
+                    <div class="logo-icon"><i class="ri-nexus-fill"></i></div>
+                    <h2>Nexus<span>CRM</span></h2>
+                </div>
+                <button class="sidebar-close-btn" id="sidebar-close-trigger"><i class="ri-close-line"></i></button>
+            </div>
+            <nav class="sidebar-menu">
+                <button class="menu-item active" data-target="dashboard"><i class="ri-dashboard-line"></i> Dashboard</button>
+                <button class="menu-item" data-target="pipeline"><i class="ri-kanban-view"></i> Lead Pipeline</button>
+                <button class="menu-item" data-target="leads-list"><i class="ri-list-check-2"></i> All Leads</button>
+                <button class="menu-item" data-target="followups"><i class="ri-calendar-todo-line"></i> Follow-ups <span class="badge dynamic-badge alert-badge" id="overdue-badge">0</span></button>
+                <button class="menu-item" data-target="analytics"><i class="ri-bar-chart-box-line"></i> Analytics</button>
+                <button class="menu-item" data-target="settings"><i class="ri-settings-4-line"></i> System Data</button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="theme-toggle-btn">
+                    <i class="ri-moon-line"></i> <span>Dark Mode</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="page-title-area">
+                    <button id="mobile-menu-toggle" class="mobile-menu-toggle"><i class="ri-menu-line"></i></button>
+                    <h1 id="current-view-title">Dashboard</h1>
+                </div>
+                <div class="top-navbar-actions">
+                    <div class="global-search-container">
+                        <i class="ri-search-line search-icon"></i>
+                        <input type="text" id="global-search" placeholder="Search leads, notes, users... (Press '/')">
+                    </div>
+                    <!-- Double Theme Toggle inside header -->
+                    <button id="theme-toggle-header" class="action-icon-btn btn-square" title="Toggle Theme" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <i class="ri-moon-line"></i>
+                    </button>
+                    <button class="btn btn-primary btn-responsive-compact" id="btn-global-create-lead">
+                        <i class="ri-add-line"></i> <span>Add New Lead</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- View Compartments -->
+            <div class="view-viewport">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="view-section active">
+                    <!-- Statistics Grid -->
+                    <div class="stats-grid" id="stats-summary-cards">
+                        <!-- Dynamically filled by JS -->
+                    </div>
+
+                    <!-- Dashboard Layout -->
+                    <div class="dashboard-layout">
+                        <div class="dashboard-main-column">
+                            <div class="content-card">
+                                <div class="card-header">
+                                    <h3><i class="ri-time-line"></i> Recent Activity Log</h3>
+                                </div>
+                                <div class="timeline-container standard-timeline" id="dashboard-activity-log">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-side-column">
+                            <div class="content-card alert-card-wrapper">
+                                <div class="card-header">
+                                    <h3><i class="ri-alarm-warning-line"></i> Critical Follow-ups</h3>
+                                </div>
+                                <div id="dashboard-urgent-followups" class="followup-mini-list">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. PIPELINE VIEW (KANBAN BOARD) -->
+                <section id="view-pipeline" class="view-section">
+                    <div class="filter-toolbar">
+                        <div class="filter-group">
+                            <select id="pipeline-filter-priority" class="form-control window-filter">
+                                <option value="">All Priorities</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                            <select id="pipeline-filter-source" class="form-control window-filter">
+                                <option value="">All Sources</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Referral">Referral</option>
+                                <option value="Website">Website</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="kanban-board" id="kanban-board-container">
+                        <!-- Generated Dynamically by JS -->
+                    </div>
+                </section>
+
+                <!-- 3. ALL LEADS LIST VIEW -->
+                <section id="view-leads-list" class="view-section">
+                    <div class="filter-toolbar complex-toolbar">
+                        <div class="filter-row">
+                            <select id="list-filter-status" class="form-control window-filter">
+                                <option value="">All Statuses</option>
+                                <option value="New Lead">New Lead</option>
+                                <option value="DM Sent">DM Sent</option>
+                                <option value="Replied">Replied</option>
+                                <option value="Meeting Scheduled">Meeting Scheduled</option>
+                                <option value="Proposal Sent">Proposal Sent</option>
+                                <option value="Converted">Converted</option>
+                                <option value="Lost">Lost</option>
+                            </select>
+                            <select id="list-filter-priority" class="form-control window-filter">
+                                <option value="">All Priorities</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                            <select id="list-filter-source" class="form-control window-filter">
+                                <option value="">All Sources</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Referral">Referral</option>
+                                <option value="Website">Website</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <select id="list-sort" class="form-control window-filter">
+                                <option value="latest">Sort by: Latest Created</option>
+                                <option value="oldest">Sort by: Oldest Created</option>
+                                <option value="followup">Sort by: Follow-up Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card table-responsive-container">
+                        <table class="leads-table" id="leads-table-element">
+                            <thead>
+                                <tr>
+                                    <th>Lead Name</th>
+                                    <th>Business</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Source</th>
+                                    <th>Next Follow-up</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table-body">
+                                <!-- Dynamic rendering -->
+                            </tbody>
+                        </table>
+                        <div id="table-empty-state" class="empty-state hidden">
+                            <i class="ri-folder-open-line"></i>
+                            <p>No leads match your specified filter criteria.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. FOLLOW-UPS ENGINE -->
+                <section id="view-followups" class="view-section">
+                    <div class="followup-container">
+                        <div class="followup-panel overdue-panel">
+                            <div class="panel-header"><h3><i class="ri-error-warning-line" style="color: var(--color-high)"></i> Overdue Action Items</h3></div>
+                            <div class="followup-list-container" id="followup-overdue-list"></div>
+                        </div>
+                        <div class="followup-panel today-panel">
+                            <div class="panel-header"><h3><i class="ri-notification-3-line" style="color: var(--color-medium)"></i> Slated for Today</h3></div>
+                            <div class="followup-list-container" id="followup-today-list"></div>
+                        </div>
+                        <div class="followup-panel upcoming-panel">
+                            <div class="panel-header"><h3><i class="ri-calendar-event-line" style="color: var(--color-low)"></i> Upcoming Strategy Calendar</h3></div>
+                            <div class="followup-list-container" id="followup-upcoming-list"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. ANALYTICS -->
+                <section id="view-analytics" class="view-section">
+                    <div class="analytics-dashboard-grid">
+                        <div class="content-card graph-card">
+                            <div class="card-header"><h3>Source Conversion Effectiveness</h3></div>
+                            <div class="canvas-wrapper"><canvas id="chart-sources"></canvas></div>
+                        </div>
+                        <div class="content-card graph-card">
+                            <div class="card-header"><h3>Pipeline Breakdown Performance</h3></div>
+                            <div class="canvas-wrapper"><canvas id="chart-pipeline"></canvas></div>
+                        </div>
+                        <div class="content-card graph-card full-span-graph">
+                            <div class="card-header"><h3>Monthly Operational Growth Metric</h3></div>
+                            <div class="canvas-wrapper"><canvas id="chart-growth"></canvas></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. SYSTEM BACKUP & DATA CONTROLS -->
+                <section id="view-settings" class="view-section">
+                    <div class="content-card settings-max-card">
+                        <div class="card-header"><h3>Data Storage Engine Operations</h3></div>
+                        <div class="settings-body">
+                            <p class="settings-description">Manage and migrate your local client pipeline storage ecosystem. Since all processing runs natively client-side inside LocalStorage, ensure you execute regular JSON exports.</p>
+                            <div class="settings-actions-group">
+                                <button class="btn btn-secondary" id="btn-export-json"><i class="ri-download-cloud-2-line"></i> Export Complete Database (JSON)</button>
+                                <div class="file-import-wrapper">
+                                    <button class="btn btn-primary" id="btn-trigger-import"><i class="ri-upload-cloud-2-line"></i> Import System Ecosystem</button>
+                                    <input type="file" id="import-file-input" accept=".json" style="display:none;">
+                                </div>
+                                <button class="btn btn-danger" id="btn-wipe-system"><i class="ri-delete-bin-7-line"></i> Pure Wipe Database</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MAIN INTERACTIVE LEAD CREATION/EDIT MODAL -->
+    <div class="modal-overlay" id="modal-lead-form">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="lead-modal-title">Create Structural Lead Profile</h2>
+                <button class="modal-close-btn close-modal-trigger"><i class="ri-close-line"></i></button>
+            </div>
+            <form id="lead-upsert-form" autocomplete="off">
+                <input type="hidden" id="form-lead-id">
+                <input type="hidden" id="form-lead-created-date">
+                <div class="modal-scroll-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="form-name">Client Representative Name *</label>
+                            <input type="text" id="form-name" class="form-control" placeholder="e.g. Sarah Jenkins" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-business">Corporate Entity / Business Name</label>
+                            <input type="text" id="form-business" class="form-control" placeholder="e.g. Acme Agency">
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="form-instagram">Instagram Handle</label>
+                            <div class="input-addon-wrapper">
+                                <span class="addon-tag">@</span>
+                                <input type="text" id="form-instagram" class="form-control" placeholder="username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-whatsapp">WhatsApp Line</label>
+                            <input type="tel" id="form-whatsapp" class="form-control" placeholder="e.g. +1234567890">
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="form-email">Primary Email Address</label>
+                            <input type="email" id="form-email" class="form-control" placeholder="name@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-website">Digital URL / Website</label>
+                            <input type="url" id="form-website" class="form-control" placeholder="https://">
+                        </div>
+                    </div>
+                    <div class="form-grid-3">
+                        <div class="form-group">
+                            <label for="form-source">Ecosystem Source</label>
+                            <select id="form-source" class="form-control">
+                                <option value="Instagram">Instagram</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Referral">Referral</option>
+                                <option value="Website">Website</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-status">Pipeline Status Position</label>
+                            <select id="form-status" class="form-control">
+                                <option value="New Lead">New Lead</option>
+                                <option value="DM Sent">DM Sent</option>
+                                <option value="Replied">Replied</option>
+                                <option value="Meeting Scheduled">Meeting Scheduled</option>
+                                <option value="Proposal Sent">Proposal Sent</option>
+                                <option value="Converted">Converted</option>
+                                <option value="Lost">Lost</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-priority">Priority Matrix</label>
+                            <select id="form-priority" class="form-control">
+                                <option value="Low">Low Priority</option>
+                                <option value="Medium" selected>Medium Priority</option>
+                                <option value="High">High Priority</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="form-budget">Deal Value / Budget ($)</label>
+                            <input type="number" id="form-budget" class="form-control" placeholder="5000">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-next-followup">Next Follow-Up Date Calendar</label>
+                            <input type="date" id="form-next-followup" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-notes">Initial Context Baseline Note</label>
+                        <textarea id="form-notes" class="form-control textarea-input" placeholder="Enter introductory context baseline details here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal-trigger">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save-lead-form">Commit Lead Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DEEP DETAILS & TIMELINE AUDIT MODAL -->
+    <div class="modal-overlay" id="modal-lead-details">
+        <div class="modal-box premium-wide-modal">
+            <div class="modal-header">
+                <div class="header-profile-block">
+                    <h2 id="detail-lead-name">Client Focus Profile</h2>
+                    <span id="detail-lead-badge-status" class="status-pill">Status</span>
+                    <span id="detail-lead-badge-priority" class="priority-pill">Priority</span>
+                </div>
+                <button class="modal-close-btn close-modal-trigger"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-scroll-body">
+                <div class="detailed-view-split">
+                    <!-- Left Core Actions Column -->
+                    <div class="detail-panel-left">
+                        <div class="meta-data-grouping">
+                            <div class="meta-field"><strong>Company Group:</strong> <span id="detail-business">---</span></div>
+                            <div class="meta-field"><strong>Pipeline Source:</strong> <span id="detail-source">---</span></div>
+                            <div class="meta-field"><strong>Financial Value:</strong> $<span id="detail-budget">0.00</span></div>
+                            <div class="meta-field"><strong>Next Action target:</strong> <span id="detail-followup">--/--/----</span></div>
+                        </div>
+                        
+                        <div class="quick-action-dashboard">
+                            <h4>Outreach Launch Matrix</h4>
+                            <div class="action-buttons-grid">
+                                <button class="btn btn-action-tool" id="act-btn-contacted"><i class="ri-mail-send-line"></i> Log DM Sent</button>
+                                <button class="btn btn-action-tool" id="act-btn-replied"><i class="ri-chat-check-line"></i> Log Replied</button>
+                                <button class="btn btn-action-tool" id="act-btn-converted"><i class="ri-hand-heart-line"></i> Convert Win</button>
+                                <button class="btn btn-action-tool" id="act-btn-instagram"><i class="ri-instagram-line"></i> View IG Profile</button>
+                                <button class="btn btn-action-tool" id="act-btn-whatsapp"><i class="ri-whatsapp-line"></i> Text WhatsApp</button>
+                                <button class="btn btn-action-tool" id="act-btn-website"><i class="ri-global-line"></i> Open Platform</button>
+                                <button class="btn btn-action-tool" id="act-btn-copy"><i class="ri-clipboard-line"></i> Extract Core Contact</button>
+                            </div>
+                        </div>
+
+                        <!-- Appended Notes Ledger System -->
+                        <div class="notes-ledger-system">
+                            <h4>Context Logs Ledger</h4>
+                            <div class="add-note-inline">
+                                <input type="text" id="new-note-input" class="form-control" placeholder="Add direct system execution note details...">
+                                <button class="btn btn-primary btn-square" id="btn-add-note"><i class="ri-send-plane-2-line"></i></button>
+                            </div>
+                            <div class="notes-history-stack" id="lead-notes-history-stack">
+                                <!-- Dynamic dynamic rendering -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right System Audit Timeline Ledger -->
+                    <div class="detail-panel-right">
+                        <h4>Historical System Audit Timeline</h4>
+                        <div class="timeline-container" id="lead-audit-timeline-container">
+                            <!-- Dynamic rendering -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREMIUM CUSTOM CONFIRMATION OVERLAY (Replaces blocking confirm() call) -->
+    <div class="modal-overlay" id="modal-confirm">
+        <div class="modal-box" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3 id="confirm-title" style="font-weight: 700; font-size: 1.15rem;"><i class="ri-question-line" style="color: var(--color-medium); margin-right: 0.5rem; vertical-align: middle;"></i> Confirm Action</h3>
+                <button class="modal-close-btn" id="btn-confirm-close"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-scroll-body" id="confirm-message" style="font-size: 0.95rem; line-height: 1.5; color: var(--text-primary); padding: 1.5rem;">
+                Are you sure you want to proceed with this operation?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-confirm-cancel">Cancel</button>
+                <button class="btn btn-danger" id="btn-confirm-proceed">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App Logic -->
+    <script>
+        /**
+         * ==========================================================================
+         * NEXUSCRM ENGINE PIPELINE MANAGEMENT SYSTEM
+         * Native Core Vanilla JS & LocalStorage Infrastructure Model Engine
+         * ==========================================================================
+         */
+
+        // Pipeline Core Global Database Structure Definition Map
+        let AppState = {
+            leads: [],
+            activities: [],
+            currentView: 'dashboard',
+            selectedLeadId: null,
+            isDarkMode: false
+        };
+
+        const PIPELINE_STATUSES = [
+            "New Lead", "DM Sent", "Replied", "Meeting Scheduled", 
+            "Proposal Sent", "Converted", "Lost"
+        ];
+
+        // INITIALIZATION LOGIC ARCHITECTURE ENGINE
+        document.addEventListener("DOMContentLoaded", () => {
+            loadDatabaseFromStorage();
+            initSystemAppEventRouting();
+            renderActiveWorkspaceView();
+            executeGlobalSystemMetricsCounter();
+            registerKeyboardShortcuts();
+        });
+
+        function loadDatabaseFromStorage() {
+            try {
+                const storedLeads = localStorage.getItem("nexus_crm_leads");
+                const storedActivities = localStorage.getItem("nexus_crm_activities");
+                const storedTheme = localStorage.getItem("nexus_crm_dark_mode");
+
+                AppState.leads = storedLeads ? JSON.parse(storedLeads) : getMockDataBaseline();
+                AppState.activities = storedActivities ? JSON.parse(storedActivities) : [
+                    { id: "act-init", leadId: "", type: "System Alert", text: "Database Pipeline Ecosystem successfully operational.", timestamp: new Date().toISOString() }
+                ];
+                AppState.isDarkMode = storedTheme === "true";
+
+                syncThemeUI();
+            } catch (e) {
+                showToastNotification("Database error: Re-routing to clean snapshot.");
+                AppState.leads = getMockDataBaseline();
+            }
+        }
+
+        function commitDatabaseToStorage() {
+            localStorage.setItem("nexus_crm_leads", JSON.stringify(AppState.leads));
+            localStorage.setItem("nexus_crm_activities", JSON.stringify(AppState.activities));
+            localStorage.setItem("nexus_crm_dark_mode", AppState.isDarkMode.toString());
+            executeGlobalSystemMetricsCounter();
+        }
+
+        // Helper to cleanly toggle dark/light theme representations across synchronized controls
+        function syncThemeUI() {
+            const sidebarBtnIcon = document.getElementById("theme-toggle").querySelector("i");
+            const sidebarBtnText = document.getElementById("theme-toggle").querySelector("span");
+            const headerBtnIcon = document.getElementById("theme-toggle-header").querySelector("i");
+
+            if (AppState.isDarkMode) {
+                document.body.classList.replace("light-mode", "dark-mode");
+                sidebarBtnIcon.className = "ri-sun-line";
+                sidebarBtnText.textContent = "Light Mode";
+                headerBtnIcon.className = "ri-sun-line";
+            } else {
+                document.body.classList.replace("dark-mode", "light-mode");
+                sidebarBtnIcon.className = "ri-moon-line";
+                sidebarBtnText.textContent = "Dark Mode";
+                headerBtnIcon.className = "ri-moon-line";
+            }
+        }
+
+        // SYSTEM NAVIGATION ROUTING ROUTERS
+        function initSystemAppEventRouting() {
+            // Top-bar navigation triggers
+            document.querySelectorAll(".sidebar-menu .menu-item").forEach(item => {
+                item.addEventListener("click", (e) => {
+                    document.querySelectorAll(".sidebar-menu .menu-item").forEach(btn => btn.classList.remove("active"));
+                    const targetBtn = e.currentTarget;
+                    targetBtn.classList.add("active");
+                    AppState.currentView = targetBtn.getAttribute("data-target");
+                    renderActiveWorkspaceView();
+                    closeMobileSidebar();
+                });
+            });
+
+            // Mobile menu drawer toggle
+            document.getElementById("mobile-menu-toggle").addEventListener("click", openMobileSidebar);
+            document.getElementById("sidebar-close-trigger").addEventListener("click", closeMobileSidebar);
+            document.getElementById("sidebar-backdrop").addEventListener("click", closeMobileSidebar);
+
+            function openMobileSidebar() {
+                document.getElementById("app-sidebar").classList.add("mobile-open");
+                document.getElementById("sidebar-backdrop").classList.add("open");
+            }
+
+            function closeMobileSidebar() {
+                document.getElementById("app-sidebar").classList.remove("mobile-open");
+                document.getElementById("sidebar-backdrop").classList.remove("open");
+            }
+
+            // Sync Dark Mode Activation Buttons
+            const toggleThemeAction = () => {
+                AppState.isDarkMode = !AppState.isDarkMode;
+                syncThemeUI();
+                commitDatabaseToStorage();
+                if(AppState.currentView === 'analytics') renderAnalyticsChartsEngine();
+            };
+
+            document.getElementById("theme-toggle").addEventListener("click", toggleThemeAction);
+            document.getElementById("theme-toggle-header").addEventListener("click", toggleThemeAction);
+
+            // Global Search Pipeline Listening
+            document.getElementById("global-search").addEventListener("input", (e) => {
+                const query = e.target.value.toLowerCase();
+                executeGlobalFilteringSearch(query);
+            });
+
+            // Windows Filter Interaction Engine
+            document.querySelectorAll(".window-filter").forEach(filterEl => {
+                filterEl.addEventListener("change", () => {
+                    if (AppState.currentView === 'pipeline') renderKanbanBoardPipeline();
+                    if (AppState.currentView === 'leads-list') renderLeadsTableEcosystem();
+                });
+            });
+
+            // Modal Control Pipeline
+            document.getElementById("btn-global-create-lead").addEventListener("click", () => openUpsertLeadModal());
+            document.querySelectorAll(".close-modal-trigger").forEach(el => {
+                el.addEventListener("click", () => {
+                    document.getElementById("modal-lead-form").classList.remove("open");
+                    document.getElementById("modal-lead-details").classList.remove("open");
+                });
+            });
+
+            // Lead Upsert Submit Trigger Form Handling
+            document.getElementById("lead-upsert-form").addEventListener("submit", handleLeadFormSubmission);
+
+            // Context Logs Note Interaction Pipeline
+            document.getElementById("btn-add-note").addEventListener("click", executeInlineNoteAddition);
+            document.getElementById("new-note-input").addEventListener("keypress", (e) => {
+                if(e.key === 'Enter') executeInlineNoteAddition();
+            });
+
+            // System Data Control Center Operations Triggers
+            document.getElementById("btn-export-json").addEventListener("click", exportDatabaseToJSONFile);
+            document.getElementById("btn-trigger-import").addEventListener("click", () => document.getElementById("import-file-input").click());
+            document.getElementById("import-file-input").addEventListener("change", importDatabaseFromJSONFile);
+            document.getElementById("btn-wipe-system").addEventListener("click", executionDatabasePurgePurification);
+
+            // Profile Interaction Launch Panel Mapping Matrix
+            document.getElementById("act-btn-contacted").addEventListener("click", () => logQuickActionUpdate("DM Sent"));
+            document.getElementById("act-btn-replied").addEventListener("click", () => logQuickActionUpdate("Replied"));
+            document.getElementById("act-btn-converted").addEventListener("click", () => logQuickActionUpdate("Converted"));
+            document.getElementById("act-btn-instagram").addEventListener("click", () => launchExternalSocialProtocol("instagram"));
+            document.getElementById("act-btn-whatsapp").addEventListener("click", () => launchExternalSocialProtocol("whatsapp"));
+            document.getElementById("act-btn-website").addEventListener("click", () => launchExternalSocialProtocol("website"));
+            document.getElementById("act-btn-copy").addEventListener("click", copyLeadContactMetaToClipboard);
+        }
+
+        // PREMIUM ASYNCHRONOUS OVERLAY CONFIRMATION DIALOGUE
+        function triggerCustomConfirmation(title, message, onProceed) {
+            document.getElementById("confirm-title").innerHTML = `<i class="ri-question-line" style="color: var(--color-medium); margin-right: 0.5rem; vertical-align: middle;"></i> ` + title;
+            document.getElementById("confirm-message").textContent = message;
+            
+            const modal = document.getElementById("modal-confirm");
+            modal.classList.add("open");
+            
+            const proceedBtn = document.getElementById("btn-confirm-proceed");
+            const cancelBtn = document.getElementById("btn-confirm-cancel");
+            const closeBtn = document.getElementById("btn-confirm-close");
+            
+            const cleanUp = () => {
+                modal.classList.remove("open");
+                // Remove listeners to ensure action hooks don't pile up
+                proceedBtn.replaceWith(proceedBtn.cloneNode(true));
+                cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+                closeBtn.replaceWith(closeBtn.cloneNode(true));
+            };
+            
+            document.getElementById("btn-confirm-proceed").addEventListener("click", () => {
+                onProceed();
+                cleanUp();
+            });
+            
+            document.getElementById("btn-confirm-cancel").addEventListener("click", cleanUp);
+            document.getElementById("btn-confirm-close").addEventListener("click", cleanUp);
+        }
+
+        // ROUTER CONTROLLER COMPARTMENT REDIRECTOR
+        function renderActiveWorkspaceView() {
+            document.querySelectorAll(".view-section").forEach(view => view.classList.remove("active"));
+            const viewTitleMap = {
+                'dashboard': 'Executive Dashboard',
+                'pipeline': 'Lead Deals Kanban Board Pipeline',
+                'leads-list': 'Central Database Registry',
+                'followups': 'Action Follow-up Management Engine',
+                'analytics': 'Ecosystem Analytics & ROI Insights',
+                'settings': 'Data Storage Engine Configurations'
+            };
+            
+            document.getElementById(`view-${AppState.currentView}`).classList.add("active");
+            document.getElementById("current-view-title").textContent = viewTitleMap[AppState.currentView] || "NexusCRM Workspace";
+
+            // Sub-view specialized structural renderer activation calls
+            if (AppState.currentView === 'dashboard') renderDashboardSummaryView();
+            if (AppState.currentView === 'pipeline') renderKanbanBoardPipeline();
+            if (AppState.currentView === 'leads-list') renderLeadsTableEcosystem();
+            if (AppState.currentView === 'followups') renderFollowupsEngineLists();
+            if (AppState.currentView === 'analytics') renderAnalyticsChartsEngine();
+        }
+
+        // 1. EXECUTIVE DASHBOARD SUB-VIEW GRAPHICS RENDERING ENGINE
+        function renderDashboardSummaryView() {
+            const metrics = computeStatisticalMetricsMetrics();
+            const cardsContainer = document.getElementById("stats-summary-cards");
+            
+            const elementsData = [
+                { title: "Total Database Space", value: metrics.total, growth: "Active entries in local CRM space" },
+                { title: "Fresh Outreach Leads", value: metrics.newLeads, growth: "Status: New Lead positioning" },
+                { title: "Total Converted Sales", value: metrics.converted, growth: `Conversion Velocity: ${metrics.conversionRate}%` },
+                { title: "Lost Opportunities", value: metrics.lost, growth: "Requiring future nurture protocols" },
+                { title: "Meetings Planned", value: metrics.meetings, growth: "High engagement target points" }
+            ];
+
+            cardsContainer.innerHTML = elementsData.map(c => `
+                <div class="stat-card">
+                    <div>
+                        <div class="stat-card-title">${c.title}</div>
+                        <div class="stat-card-value">${c.value}</div>
+                    </div>
+                    <div class="stat-card-growth">${c.growth}</div>
+                </div>
+            `).join('');
+
+            // Load recent general structural timelines activity log
+            const timelineContainer = document.getElementById("dashboard-activity-log");
+            const historicalSlice = AppState.activities.slice(-6).reverse();
+            
+            if(historicalSlice.length === 0) {
+                timelineContainer.innerHTML = `<p class="text-muted">No historical events processed across this ecosystem deployment instance yet.</p>`;
+            } else {
+                timelineContainer.innerHTML = historicalSlice.map(act => `
+                    <div class="timeline-item">
+                        <div class="timeline-badge"><i class="ri-history-line"></i></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text">${escapeHTML(act.text)}</div>
+                            <div class="timeline-time">${formatRelativeTimeDateString(act.timestamp)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Populate Right Dashboard Column Urgent Actions Mini panel
+            const urgentBox = document.getElementById("dashboard-urgent-followups");
+            const todayISO = new Date().toISOString().split('T')[0];
+            const criticalItems = AppState.leads.filter(l => l.status !== "Converted" && l.status !== "Lost" && l.nextFollowup <= todayISO);
+
+            if(criticalItems.length === 0) {
+                urgentBox.innerHTML = `
+                    <div class="empty-state">
+                        <i class="ri-checkbox-circle-line" style="color:var(--brand-accent);"></i>
+                        <p style="font-size:0.85rem;">All operations smooth. No actions overdue currently.</p>
+                    </div>`;
+            } else {
+                urgentBox.innerHTML = criticalItems.slice(0, 4).map(l => {
+                    const isOverdue = l.nextFollowup < todayISO;
+                    return `
+                        <div class="mini-followup-card ${isOverdue ? 'overdue' : ''}" onclick="openDetailedLeadProfileView('${l.id}')" style="cursor:pointer;">
+                            <h4>${escapeHTML(l.name)}</h4>
+                            <p>Target: ${l.nextFollowup} — <strong>${isOverdue ? 'OVERDUE' : 'DUE TODAY'}</strong></p>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // 2. PIPELINE KANBAN INTERACTIVE DRAG-DROP SYSTEM BOARD ENGINE
+        function renderKanbanBoardPipeline() {
+            const container = document.getElementById("kanban-board-container");
+            container.innerHTML = "";
+
+            const filteredPriority = document.getElementById("pipeline-filter-priority").value;
+            const filteredSource = document.getElementById("pipeline-filter-source").value;
+
+            PIPELINE_STATUSES.forEach(status => {
+                let leadsInColumn = AppState.leads.filter(l => l.status === status);
+                
+                if (filteredPriority) leadsInColumn = leadsInColumn.filter(l => l.priority === filteredPriority);
+                if (filteredSource) leadsInColumn = leadsInColumn.filter(l => l.source === filteredSource);
+
+                const columnEl = document.createElement("div");
+                columnEl.className = "kanban-column";
+                columnEl.innerHTML = `
+                    <div class="kanban-column-header">
+                        <span>${status}</span>
+                        <span class="kanban-column-count">${leadsInColumn.length}</span>
+                    </div>
+                    <div class="kanban-cards-container" data-status="${status}" id="kanban-stack-${status.replace(/\s+/g, '-')}">
+                        <!-- Cards Append Space -->
+                    </div>
+                `;
+
+                container.appendChild(columnEl);
+                const cardStack = columnEl.querySelector(".kanban-cards-container");
+
+                // Drag events hooks attachment
+                cardStack.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    cardStack.classList.add("drag-over");
+                });
+
+                cardStack.addEventListener("dragleave", () => cardStack.classList.remove("drag-over"));
+                cardStack.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    cardStack.classList.remove("drag-over");
+                    const leadId = e.dataTransfer.getData("text/plain");
+                    const targetStatus = cardStack.getAttribute("data-status");
+                    executeLeadPipelineStatusMigration(leadId, targetStatus);
+                });
+
+                if(leadsInColumn.length === 0) {
+                    cardStack.innerHTML = `<div class="empty-state" style="padding:1.5rem; font-size:0.75rem;"><p>Empty Channel</p></div>`;
+                } else {
+                    leadsInColumn.forEach(lead => {
+                        const card = document.createElement("div");
+                        card.className = "lead-card";
+                        card.setAttribute("draggable", "true");
+                        card.innerHTML = `
+                            <div class="lead-card-header">
+                                <div class="lead-card-title">${escapeHTML(lead.name)}</div>
+                                <div class="priority-indicator priority-${lead.priority}" title="${lead.priority} Priority"></div>
+                            </div>
+                            <div class="lead-card-meta">
+                                <div><i class="ri-building-line"></i> ${escapeHTML(lead.business || 'No Entity Specified')}</div>
+                                <div><i class="ri-calendar-check-line"></i> ${lead.nextFollowup}</div>
+                                <div><i class="ri-money-dollar-circle-line"></i> $${lead.budget || '0'}</div>
+                            </div>
+                            <div class="lead-card-footer">
+                                <span class="source-tag">${lead.source}</span>
+                                <div class="lead-card-actions">
+                                    <button class="action-icon-btn" onclick="event.stopPropagation(); openUpsertLeadModal('${lead.id}')" title="Edit Profile"><i class="ri-edit-line"></i></button>
+                                    <button class="action-icon-btn" onclick="event.stopPropagation(); openDetailedLeadProfileView('${lead.id}')" title="View Logs & History Audit"><i class="ri-eye-line"></i></button>
+                                    <button class="action-icon-btn" onclick="event.stopPropagation(); executionLeadEntryDeletion('${lead.id}')" title="Wipe Lead"><i class="ri-delete-bin-line"></i></button>
+                                </div>
+                            </div>
+                        `;
+
+                        card.addEventListener("dragstart", (evt) => {
+                            evt.dataTransfer.setData("text/plain", lead.id);
+                            evt.dataTransfer.effectAllowed = "move";
+                        });
+                        
+                        card.addEventListener("click", () => openDetailedLeadProfileView(lead.id));
+                        cardStack.appendChild(card);
+                    });
+                }
+            });
+        }
+
+        function executeLeadPipelineStatusMigration(leadId, targetStatus) {
+            const lead = AppState.leads.find(l => l.id === leadId);
+            if(lead && lead.status !== targetStatus) {
+                const oldStatus = lead.status;
+                lead.status = targetStatus;
+                
+                logSystemActivityEvent(leadId, "Status Changed", `Shifted pipeline alignment position from context tier [${oldStatus}] to [${targetStatus}].`);
+                commitDatabaseToStorage();
+                renderActiveWorkspaceView();
+                showToastNotification(`Pipeline migration complete for ${lead.name}.`);
+            }
+        }
+
+        // 3. CENTRAL DATABASE REGISTRY RENDERING ENGINE (TABLE ARCHITECTURE)
+        function renderLeadsTableEcosystem() {
+            const tbody = document.getElementById("leads-table-body");
+            const emptyState = document.getElementById("table-empty-state");
+            tbody.innerHTML = "";
+
+            const filterStatus = document.getElementById("list-filter-status").value;
+            const filterPriority = document.getElementById("list-filter-priority").value;
+            const filterSource = document.getElementById("list-filter-source").value;
+            const sortingStrategy = document.getElementById("list-sort").value;
+
+            let processingPool = [...AppState.leads];
+
+            if (filterStatus) processingPool = processingPool.filter(l => l.status === filterStatus);
+            if (filterPriority) processingPool = processingPool.filter(l => l.priority === filterPriority);
+            if (filterSource) processingPool = processingPool.filter(l => l.source === filterSource);
+
+            // Execution Sort Sequencing Stratagem
+            if(sortingStrategy === "latest") processingPool.sort((a,b) => new Date(b.createdDate) - new Date(a.createdDate));
+            if(sortingStrategy === "oldest") processingPool.sort((a,b) => new Date(a.createdDate) - new Date(b.createdDate));
+            if(sortingStrategy === "followup") processingPool.sort((a,b) => new Date(a.nextFollowup) - new Date(b.nextFollowup));
+
+            if(processingPool.length === 0) {
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            processingPool.forEach(lead => {
+                const row = document.createElement("tr");
+                row.style.cursor = "pointer";
+                row.addEventListener("click", () => openDetailedLeadProfileView(lead.id));
+                row.innerHTML = `
+                    <td><strong>${escapeHTML(lead.name)}</strong></td>
+                    <td>${escapeHTML(lead.business || '---')}</td>
+                    <td><span class="status-pill status-${lead.status.replace(/\s+/g, '-')}">${lead.status}</span></td>
+                    <td><span class="priority-indicator priority-${lead.priority}" style="display:inline-block; margin-right:6px;"></span>${lead.priority}</td>
+                    <td><span class="source-tag">${lead.source}</span></td>
+                    <td>${lead.nextFollowup}</td>
+                    <td onclick="event.stopPropagation();">
+                        <div class="lead-card-actions">
+                            <button class="action-icon-btn" onclick="openUpsertLeadModal('${lead.id}')"><i class="ri-edit-line"></i></button>
+                            <button class="action-icon-btn" onclick="openDetailedLeadProfileView('${lead.id}')"><i class="ri-eye-line"></i></button>
+                            <button class="action-icon-btn" onclick="executionLeadEntryDeletion('${lead.id}')"><i class="ri-delete-bin-line"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 4. STRATEGY CALENDAR CALENDAR FOLLOW-UPS ENGINE PROCESSING
+        function renderFollowupsEngineLists() {
+            const overdueContainer = document.getElementById("followup-overdue-list");
+            const todayContainer = document.getElementById("followup-today-list");
+            const upcomingContainer = document.getElementById("followup-upcoming-list");
+
+            overdueContainer.innerHTML = "";
+            todayContainer.innerHTML = "";
+            upcomingContainer.innerHTML = "";
+
+            const todayISO = new Date().toISOString().split('T')[0];
+            const liveLeads = AppState.leads.filter(l => l.status !== "Converted" && l.status !== "Lost");
+
+            liveLeads.forEach(lead => {
+                const itemEl = document.createElement("div");
+                itemEl.className = "mini-followup-card";
+                itemEl.style.cursor = "pointer";
+                itemEl.addEventListener("click", () => openDetailedLeadProfileView(lead.id));
+                itemEl.innerHTML = `
+                    <h4>${escapeHTML(lead.name)}</h4>
+                    <p><strong>Entity:</strong> ${escapeHTML(lead.business || 'Private individual')}</p>
+                    <p><strong>Timeline Boundary:</strong> ${lead.nextFollowup} | Value: $${lead.budget || '0'}</p>
+                `;
+
+                if(lead.nextFollowup < todayISO) {
+                    itemEl.classList.add("overdue");
+                    overdueContainer.appendChild(itemEl);
+                } else if(lead.nextFollowup === todayISO) {
+                    todayContainer.appendChild(itemEl);
+                } else {
+                    upcomingContainer.appendChild(itemEl);
+                }
+            });
+
+            if(!overdueContainer.innerHTML) overdueContainer.innerHTML = `<p class="text-muted" style="font-size:0.85rem;">No overdue pipeline items found.</p>`;
+            if(!todayContainer.innerHTML) todayContainer.innerHTML = `<p class="text-muted" style="font-size:0.85rem;">No actions slated for execution windows today.</p>`;
+            if(!upcomingContainer.innerHTML) upcomingContainer.innerHTML = `<p class="text-muted" style="font-size:0.85rem;">Future outlook windows clear.</p>`;
+        }
+
+        // 5. ANALYTICS NATIVE CANVAS CUSTOM GRAPHICAL CORE ENGINE
+        function renderAnalyticsChartsEngine() {
+            // Pipeline Breakdown Calculation
+            const pipelineData = {};
+            PIPELINE_STATUSES.forEach(st => pipelineData[st] = 0);
+            AppState.leads.forEach(l => { if(pipelineData[l.status] !== undefined) pipelineData[l.status]++; });
+
+            // Sources Matrix Conversion Calculation
+            const sources = ["Instagram", "WhatsApp", "Referral", "Website", "Other"];
+            const sourceConversionMap = {};
+            sources.forEach(src => { sourceConversionMap[src] = { total: 0, converted: 0 }; });
+            
+            AppState.leads.forEach(l => {
+                if(sourceConversionMap[l.source]) {
+                    sourceConversionMap[l.source].total++;
+                    if(l.status === "Converted") sourceConversionMap[l.source].converted++;
+                }
+            });
+
+            // Prevent layout crashes on zero dimension queries during inactive view draws
+            setTimeout(() => {
+                executePureCanvasBarChart("chart-pipeline", pipelineData, "#161D6F");
+                executePureCanvasPieChart("chart-sources", sourceConversionMap);
+                executePureCanvasGrowthChart("chart-growth");
+            }, 50);
+        }
+
+        function executePureCanvasBarChart(canvasId, dataset, colorHex) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            const ctx = canvas.getContext("2d");
+            
+            const rect = canvas.parentElement.getBoundingClientRect();
+            if(rect.width === 0) return;
+            
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = 250 * dpr;
+            ctx.scale(dpr, dpr);
+
+            const keys = Object.keys(dataset);
+            const vals = Object.values(dataset);
+            const maxVal = Math.max(...vals, 5);
+
+            ctx.clearRect(0, 0, rect.width, 250);
+            
+            const paddingLeft = 40;
+            const paddingBottom = 40;
+            const chartWidth = rect.width - paddingLeft - 20;
+            const chartHeight = 250 - paddingBottom - 20;
+            const barWidth = Math.max(10, chartWidth / keys.length - 12);
+
+            keys.forEach((key, index) => {
+                const val = vals[index];
+                const barH = (val / maxVal) * chartHeight;
+                const x = paddingLeft + index * (chartWidth / keys.length) + 6;
+                const y = chartHeight + 20 - barH;
+
+                ctx.fillStyle = AppState.isDarkMode ? "#222B5C" : "#E2E8F0";
+                ctx.fillRect(x, 20, barWidth, chartHeight);
+
+                ctx.fillStyle = AppState.isDarkMode ? "#98DED9" : "#161D6F";
+                ctx.fillRect(x, y, barWidth, barH);
+
+                ctx.fillStyle = AppState.isDarkMode ? "#94A3B8" : "#64748B";
+                ctx.font = "10px sans-serif";
+                ctx.fillText(key.substring(0, 8), x, chartHeight + 35);
+                ctx.fillText(val.toString(), x + barWidth/2 - 4, y - 6);
+            });
+        }
+
+        function executePureCanvasPieChart(canvasId, sourceConversionMap) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            const ctx = canvas.getContext("2d");
+            
+            const rect = canvas.parentElement.getBoundingClientRect();
+            if(rect.width === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = 250 * dpr;
+            ctx.scale(dpr, dpr);
+
+            ctx.clearRect(0, 0, rect.width, 250);
+
+            const dataPoints = Object.keys(sourceConversionMap).map(key => {
+                const entry = sourceConversionMap[key];
+                const rate = entry.total > 0 ? Math.round((entry.converted / entry.total) * 100) : 0;
+                return { label: key, value: entry.total, rate: rate };
+            });
+
+            const totalVolume = dataPoints.reduce((sum, current) => sum + current.value, 0) || 1;
+            let currentAngle = 0;
+            const paletteColors = ["#161D6F", "#98DED9", "#C7FFD8", "#F59E0B", "#EF4444"];
+
+            dataPoints.forEach((point, idx) => {
+                const sliceAngle = (point.value / totalVolume) * 2 * Math.PI;
+                if(sliceAngle === 0) return;
+
+                ctx.beginPath();
+                ctx.arc(100, 110, 80, currentAngle, currentAngle + sliceAngle);
+                ctx.lineTo(100, 110);
+                ctx.fillStyle = paletteColors[idx % paletteColors.length];
+                ctx.fill();
+
+                const legendX = 210;
+                const legendY = 30 + idx * 30;
+                ctx.fillRect(legendX, legendY, 12, 12);
+                
+                ctx.fillStyle = AppState.isDarkMode ? "#F1F5F9" : "#0F172A";
+                ctx.font = "11px sans-serif";
+                ctx.fillText(`${point.label}: ${point.value} (CR: ${point.rate}%)`, legendX + 20, legendY + 10);
+
+                currentAngle += sliceAngle;
+            });
+        }
+
+        function executePureCanvasGrowthChart(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const rect = canvas.parentElement.getBoundingClientRect();
+            if(rect.width === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = 250 * dpr;
+            ctx.scale(dpr, dpr);
+            ctx.clearRect(0, 0, rect.width, 250);
+
+            ctx.strokeStyle = "#98DED9";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(40, 180);
+            ctx.bezierCurveTo(120, 160, 200, 80, rect.width - 40, 40);
+            ctx.stroke();
+
+            ctx.fillStyle = AppState.isDarkMode ? "#94A3B8" : "#64748B";
+            ctx.font = "12px sans-serif";
+            ctx.fillText("Q1/Q2 Scaling Operational Vector Line", 50, 50);
+        }
+
+        // 6. GLOBAL SEARCH AND FILTER MECHANISMS ENGINE
+        function executeGlobalFilteringSearch(query) {
+            if(!query) {
+                renderActiveWorkspaceView();
+                return;
+            }
+
+            const matchedLeads = AppState.leads.filter(lead => {
+                return lead.name.toLowerCase().includes(query) || 
+                       (lead.business && lead.business.toLowerCase().includes(query)) ||
+                       lead.source.toLowerCase().includes(query) ||
+                       lead.priority.toLowerCase().includes(query) ||
+                       lead.notes.toLowerCase().includes(query);
+            });
+
+            if (AppState.currentView === 'pipeline') {
+                document.querySelectorAll(".lead-card").forEach(card => {
+                    const txt = card.textContent.toLowerCase();
+                    card.style.opacity = txt.includes(query) ? "1" : "0.2";
+                });
+            } else if (AppState.currentView === 'leads-list') {
+                document.querySelectorAll("#leads-table-body tr").forEach(row => {
+                    const txt = row.textContent.toLowerCase();
+                    row.style.display = txt.includes(query) ? "" : "none";
+                });
+            }
+        }
+
+        // MODAL CONTROLLERS AND POP-UP UPSERT LOGIC INJECTIONS
+        function openUpsertLeadModal(leadId = null) {
+            const modal = document.getElementById("modal-lead-form");
+            const form = document.getElementById("lead-upsert-form");
+            form.reset();
+
+            if(leadId) {
+                document.getElementById("lead-modal-title").textContent = "Modify Operational Lead Baseline";
+                const lead = AppState.leads.find(l => l.id === leadId);
+                if(!lead) return;
+
+                document.getElementById("form-lead-id").value = lead.id;
+                document.getElementById("form-lead-created-date").value = lead.createdDate;
+                document.getElementById("form-name").value = lead.name;
+                document.getElementById("form-business").value = lead.business || "";
+                document.getElementById("form-instagram").value = lead.instagram || "";
+                document.getElementById("form-whatsapp").value = lead.whatsapp || "";
+                document.getElementById("form-email").value = lead.email || "";
+                document.getElementById("form-website").value = lead.website || "";
+                document.getElementById("form-source").value = lead.source;
+                document.getElementById("form-status").value = lead.status;
+                document.getElementById("form-priority").value = lead.priority;
+                document.getElementById("form-budget").value = lead.budget || "";
+                document.getElementById("form-next-followup").value = lead.nextFollowup;
+                document.getElementById("form-notes").value = lead.notes || "";
+            } else {
+                document.getElementById("lead-modal-title").textContent = "Create Structural Lead Profile";
+                document.getElementById("form-lead-id").value = "";
+                document.getElementById("form-lead-created-date").value = "";
+                document.getElementById("form-next-followup").value = new Date().toISOString().split('T')[0];
+            }
+
+            modal.classList.add("open");
+        }
+
+        function handleLeadFormSubmission(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById("form-lead-id").value;
+            const name = document.getElementById("form-name").value.trim();
+            const createdDate = document.getElementById("form-lead-created-date").value || new Date().toISOString();
+
+            const payload = {
+                id: id || "lead-" + Math.random().toString(36).substring(2, 11),
+                name: name,
+                business: document.getElementById("form-business").value.trim(),
+                instagram: document.getElementById("form-instagram").value.trim(),
+                whatsapp: document.getElementById("form-whatsapp").value.trim(),
+                email: document.getElementById("form-email").value.trim(),
+                website: document.getElementById("form-website").value.trim(),
+                source: document.getElementById("form-source").value,
+                status: document.getElementById("form-status").value,
+                priority: document.getElementById("form-priority").value,
+                budget: document.getElementById("form-budget").value,
+                nextFollowup: document.getElementById("form-next-followup").value,
+                notes: document.getElementById("form-notes").value.trim(),
+                createdDate: createdDate,
+                appendLogs: id ? (AppState.leads.find(l => l.id === id)?.appendLogs || []) : []
+            };
+
+            if(id) {
+                const index = AppState.leads.findIndex(l => l.id === id);
+                AppState.leads[index] = payload;
+                logSystemActivityEvent(payload.id, "Profile Updated", `Modified details profile configuration for execution lead: ${payload.name}`);
+            } else {
+                AppState.leads.push(payload);
+                logSystemActivityEvent(payload.id, "Lead Created", `Instantiated fresh architectural profile entry mapping for representative: ${payload.name}`);
+            }
+
+            commitDatabaseToStorage();
+            document.getElementById("modal-lead-form").classList.remove("open");
+            renderActiveWorkspaceView();
+            showToastNotification(`System record updated for: ${payload.name}`);
+        }
+
+        // Modified deletion method to use premium custom asynchronous confirm dialog
+        function executionLeadEntryDeletion(leadId) {
+            const lead = AppState.leads.find(l => l.id === leadId);
+            if(!lead) return;
+            
+            triggerCustomConfirmation(
+                "Delete Lead Profile",
+                `Are you sure you want to permanently erase the client profile data for ${lead.name}? This action cannot be undone.`,
+                () => {
+                    AppState.leads = AppState.leads.filter(l => l.id !== leadId);
+                    AppState.activities = AppState.activities.filter(a => a.leadId !== leadId);
+                    commitDatabaseToStorage();
+                    renderActiveWorkspaceView();
+                    showToastNotification("Lead profiles removed cleanly.");
+                }
+            );
+        }
+
+        // DEEP SYSTEM AUDIT DETAILS AND HISTORICAL MODAL CONTROLLER
+        function openDetailedLeadProfileView(leadId) {
+            const lead = AppState.leads.find(l => l.id === leadId);
+            if(!lead) return;
+
+            AppState.selectedLeadId = leadId;
+
+            document.getElementById("detail-lead-name").textContent = lead.name;
+            document.getElementById("detail-business").textContent = lead.business || "---";
+            document.getElementById("detail-source").textContent = lead.source;
+            document.getElementById("detail-budget").textContent = lead.budget || "0.00";
+            document.getElementById("detail-followup").textContent = lead.nextFollowup;
+
+            const statusBadge = document.getElementById("detail-lead-badge-status");
+            statusBadge.textContent = lead.status;
+            statusBadge.className = `status-pill status-${lead.status.replace(/\s+/g, '-')}`;
+
+            const priorityBadge = document.getElementById("detail-lead-badge-priority");
+            priorityBadge.textContent = `${lead.priority} Priority`;
+            priorityBadge.className = `priority-pill priority-${lead.priority}`;
+
+            renderLeadContextNotesLedger(lead);
+            renderLeadAuditHistoricalTimeline(leadId);
+
+            document.getElementById("modal-lead-details").classList.add("open");
+        }
+
+        function renderLeadContextNotesLedger(lead) {
+            const stack = document.getElementById("lead-notes-history-stack");
+            stack.innerHTML = "";
+
+            if(lead.notes) {
+                stack.innerHTML += `
+                    <div class="system-note-item">
+                        <div class="system-note-header"><span>Baseline Entry Notes Context</span><span>${formatRelativeTimeDateString(lead.createdDate)}</span></div>
+                        <div>${escapeHTML(lead.notes)}</div>
+                    </div>
+                `;
+            }
+
+            if(lead.appendLogs && lead.appendLogs.length > 0) {
+                lead.appendLogs.slice().reverse().forEach(n => {
+                    stack.innerHTML += `
+                        <div class="system-note-item">
+                            <div class="system-note-header"><span>Supplemental Entry Log</span><span>${formatRelativeTimeDateString(n.timestamp)}</span></div>
+                            <div>${escapeHTML(n.text)}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            if(!stack.innerHTML) stack.innerHTML = `<p class="text-muted" style="font-size:0.75rem;">No context structural ledger footnotes generated yet.</p>`;
+        }
+
+        function renderLeadAuditHistoricalTimeline(leadId) {
+            const container = document.getElementById("lead-audit-timeline-container");
+            const matches = AppState.activities.filter(a => a.leadId === leadId).slice().reverse();
+
+            if(matches.length === 0) {
+                container.innerHTML = `<p class="text-muted" style="font-size:0.75rem;">No lifecycle mutations registered against this target profile structural entry.</p>`;
+            } else {
+                container.innerHTML = matches.map(act => `
+                    <div class="timeline-item">
+                        <div class="timeline-badge"><i class="ri-git-commit-line"></i></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text"><strong>${act.type}:</strong> ${escapeHTML(act.text)}</div>
+                            <div class="timeline-time">${formatRelativeTimeDateString(act.timestamp)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function executeInlineNoteAddition() {
+            const input = document.getElementById("new-note-input");
+            const noteVal = input.value.trim();
+            if(!noteVal || !AppState.selectedLeadId) return;
+
+            const lead = AppState.leads.find(l => l.id === AppState.selectedLeadId);
+            if(!lead) return;
+
+            if(!lead.appendLogs) lead.appendLogs = [];
+            
+            const noteObject = { text: noteVal, timestamp: new Date().toISOString() };
+            lead.appendLogs.push(noteObject);
+
+            logSystemActivityEvent(lead.id, "Follow-up Updated", `Appended explicit system entry tracking details footnote: "${noteVal}"`);
+            commitDatabaseToStorage();
+            
+            input.value = "";
+            renderLeadContextNotesLedger(lead);
+            renderLeadAuditHistoricalTimeline(lead.id);
+            showToastNotification("Note entry successfully committed to local record ledger.");
+        }
+
+        function logQuickActionUpdate(targetStatus) {
+            if(!AppState.selectedLeadId) return;
+            executeLeadPipelineStatusMigration(AppState.selectedLeadId, targetStatus);
+            openDetailedLeadProfileView(AppState.selectedLeadId);
+        }
+
+        // PROTOCOL SOCIAL MATRIX LAUNCH ACTIONS PIPELINE
+        function launchExternalSocialProtocol(platform) {
+            const lead = AppState.leads.find(l => l.id === AppState.selectedLeadId);
+            if(!lead) return;
+
+            let targetUrl = "";
+            if(platform === 'instagram' && lead.instagram) targetUrl = `https://instagram.com/${lead.instagram.replace('@','')}`;
+            if(platform === 'whatsapp' && lead.whatsapp) targetUrl = `https://wa.me/${lead.whatsapp.replace(/[^0-9]/g, '')}`;
+            if(platform === 'website' && lead.website) targetUrl = lead.website.startsWith("http") ? lead.website : `https://${lead.website}`;
+
+            if(targetUrl) {
+                window.open(targetUrl, "_blank");
+                logSystemActivityEvent(lead.id, "Outreach Clicked", `Dispatched and redirected workspace to external portal target line: [${platform}]`);
+                commitDatabaseToStorage();
+                renderLeadAuditHistoricalTimeline(lead.id);
+            } else {
+                showToastNotification(`No target profile endpoint configured for outreach standard channel: [${platform}]`);
+            }
+        }
+
+        function copyLeadContactMetaToClipboard() {
+            const lead = AppState.leads.find(l => l.id === AppState.selectedLeadId);
+            if(!lead) return;
+
+            const textDump = `Lead: ${lead.name}\nBusiness: ${lead.business || 'N/A'}\nEmail: ${lead.email || 'N/A'}\nWhatsApp: ${lead.whatsapp || 'N/A'}\nInstagram: ${lead.instagram || 'N/A'}`;
+            
+            // Standard execution fallback safe copy mechanisms
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = textDump;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showToastNotification("Contact details saved to clipboard.");
+            } catch(e) {
+                showToastNotification("Fallback clipboard generation failed.");
+            }
+            document.body.removeChild(tempTextArea);
+        }
+
+        // SYSTEM BACKUP DATA EXPORT/IMPORT ARCHITECTURE
+        function exportDatabaseToJSONFile() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `nexus_crm_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToastNotification("Client database compiled, compressed, and downloaded.");
+        }
+
+        function importDatabaseFromJSONFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if(parsed.leads && parsed.activities) {
+                        AppState.leads = parsed.leads;
+                        AppState.activities = parsed.activities;
+                        commitDatabaseToStorage();
+                        renderActiveWorkspaceView();
+                        showToastNotification("Ecosystem mapping structure recovered successfully.");
+                    } else {
+                        showToastNotification("Invalid file profile structural format mapping.");
+                    }
+                } catch(err) {
+                    showToastNotification("Error parsing backup package target data matrices.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Modified system wide clean reset to use premium custom asynchronous confirm dialog
+        function executionDatabasePurgePurification() {
+            triggerCustomConfirmation(
+                "Pure Wipe Local Database",
+                "CRITICAL WARNING: This operation completely wipes all local CRM storage data. This action is fully irreversible. Are you sure you want to proceed with full database purification?",
+                () => {
+                    localStorage.clear();
+                    AppState.leads = [];
+                    AppState.activities = [];
+                    commitDatabaseToStorage();
+                    location.reload();
+                }
+            );
+        }
+
+        // METRICS ENGINE UTILITIES CALCULATORS
+        function computeStatisticalMetricsMetrics() {
+            const total = AppState.leads.length;
+            const converted = AppState.leads.filter(l => l.status === "Converted").length;
+            const rate = total > 0 ? Math.round((converted / total) * 100) : 0;
+            
+            return {
+                total: total,
+                newLeads: AppState.leads.filter(l => l.status === "New Lead").length,
+                converted: converted,
+                lost: AppState.leads.filter(l => l.status === "Lost").length,
+                meetings: AppState.leads.filter(l => l.status === "Meeting Scheduled").length,
+                conversionRate: rate
+            };
+        }
+
+        function executeGlobalSystemMetricsCounter() {
+            const todayISO = new Date().toISOString().split('T')[0];
+            const overdueCount = AppState.leads.filter(l => l.status !== "Converted" && l.status !== "Lost" && l.nextFollowup < todayISO).length;
+            
+            const badge = document.getElementById("overdue-badge");
+            if(badge) {
+                badge.textContent = overdueCount;
+                badge.style.display = overdueCount > 0 ? "inline-block" : "none";
+            }
+        }
+
+        function logSystemActivityEvent(leadId, type, text) {
+            AppState.activities.push({
+                id: "act-" + Math.random().toString(36).substring(2, 11),
+                leadId: leadId,
+                type: type,
+                text: text,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // SYSTEM TOAST NOTIFICATION UTILITY
+        function showToastNotification(msg) {
+            const box = document.getElementById("toast-container");
+            const el = document.createElement("div");
+            el.className = "toast-message";
+            el.innerHTML = `<i class="ri-notification-badge-line"></i> <span>${escapeHTML(msg)}</span>`;
+            box.appendChild(el);
+            setTimeout(() => { el.remove(); }, 4000);
+        }
+
+        // SYSTEM SHORTCUT KEYS LISTENER INTERACTION
+        function registerKeyboardShortcuts() {
+            window.addEventListener("keydown", (e) => {
+                if(e.key === '/' && document.activeElement !== document.getElementById("global-search")) {
+                    e.preventDefault();
+                    document.getElementById("global-search").focus();
+                }
+                if(e.key === 'Escape') {
+                    document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("open"));
+                }
+            });
+        }
+
+        // FORMATTING STRING ENGINES
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        function formatRelativeTimeDateString(isoString) {
+            try {
+                const date = new Date(isoString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                
+                if (diffMins < 1) return "Just now";
+                if (diffMins < 60) return `${diffMins}m ago`;
+                
+                const diffHours = Math.floor(diffMins / 60);
+                if (diffHours < 24) return `${diffHours}h ago`;
+                
+                return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+            } catch(e) {
+                return "Recent";
+            }
+        }
+
+        // MOCK SYSTEM SEED SNAPSHOT GENERATOR
+        function getMockDataBaseline() {
+            return [
+                {
+                    id: "mock-1",
+                    name: "Alexander Wright",
+                    business: "Apex Design Lab",
+                    instagram: "apex.design",
+                    whatsapp: "+14155552671",
+                    email: "alex@apexdesign.io",
+                    website: "apexdesign.io",
+                    source: "Instagram",
+                    status: "New Lead",
+                    priority: "High",
+                    budget: "8500",
+                    nextFollowup: new Date().toISOString().split('T')[0],
+                    notes: "Discovered platform via design asset curation page. Reached out seeking scaling UI/UX capabilities framework structures.",
+                    createdDate: new Date(Date.now() - 86400000).toISOString(),
+                    appendLogs: []
+                },
+                {
+                    id: "mock-2",
+                    name: "Elena Rostova",
+                    business: "SaaSify Metrics",
+                    instagram: "elena_metrics",
+                    whatsapp: "+442079460192",
+                    email: "elena@saasifymetrics.com",
+                    website: "saasifymetrics.com",
+                    source: "Referral",
+                    status: "Meeting Scheduled",
+                    priority: "Medium",
+                    budget: "12000",
+                    nextFollowup: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+                    notes: "Introduced via venture partner circle. High interest in immediate localized ecosystem deployment implementation.",
+                    createdDate: new Date(Date.now() - 172800000).toISOString(),
+                    appendLogs: [
+                        { text: "Dispatched calendar configuration alignment link options.", timestamp: new Date(Date.now() - 90000000).toISOString() }
+                    ]
+                }
+            ];
+        }
+    </script>
+</body>
+</html>
