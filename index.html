@@ -2641,18 +2641,18 @@
             setTimeout(() => { el.remove(); }, 4000);
         }
 
-        // SYSTEM SHORTCUT KEYS LISTENER INTERACTION
-        function registerKeyboardShortcuts() {
-            window.addEventListener("keydown", (e) => {
-                if(e.key === 'shift+k' && document.activeElement !== document.getElementById("global-search")) {
-                    e.preventDefault();
-                    document.getElementById("global-search").focus();
-                }
-                if(e.key === 'Escape') {
-                    document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("open"));
-                }
-            });
-        }
+        // // SYSTEM SHORTCUT KEYS LISTENER INTERACTION
+        // function registerKeyboardShortcuts() {
+        //     window.addEventListener("keydown", (e) => {
+        //         if(e.key === 'shift+k' && document.activeElement !== document.getElementById("global-search")) {
+        //             e.preventDefault();
+        //             document.getElementById("global-search").focus();
+        //         }
+        //         if(e.key === 'Escape') {
+        //             document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("open"));
+        //         }
+        //     });
+        // }
 
         // FORMATTING STRING ENGINES
         function escapeHTML(str) {
